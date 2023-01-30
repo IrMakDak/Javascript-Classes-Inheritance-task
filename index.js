@@ -1,13 +1,17 @@
 function BaseBilder (val) {
     this._value = val;
 }
+BaseBilder.prototype.log = function (methodName) {
+    console.log(methodName + ' - ', this._value);
+}
+BaseBilder.prototype.get = function () {
+    this.log('get');
+    return this;
+}
 
 class IntBuilder extends BaseBilder{
     constructor(value = 0) {
         super(value);
-    }
-    log(methodName) {
-        console.log(methodName + ' - ', this._value)
     }
     plus(...n) {
         this._value += n.reduce((n, p) => +n + +p, 0);
@@ -34,10 +38,6 @@ class IntBuilder extends BaseBilder{
         this.log('mod');
         return this;
     }
-    get() {
-        this.log('get');
-        return this;
-    }
     static random(from, to) { 
         let res = Math.floor(Math.random() * (+to - +from)) + +from;
         console.log(`random - ${res}`);
@@ -48,9 +48,9 @@ class IntBuilder extends BaseBilder{
 function StringBuilder(value = '') {
     BaseBilder.call(this, value);
 }
-StringBuilder.prototype.log = function(methodName) {
-    console.log(methodName + ' - ', this._value)
-};
+StringBuilder.prototype = Object.create(BaseBilder.prototype);
+StringBuilder.prototype.constructor = StringBuilder;
+
 StringBuilder.prototype.plus = function (...n) {
     this._value = this._value.toString() + n.reduce((n, p) => n + p, '');
     this.log('plus');
@@ -82,10 +82,6 @@ StringBuilder.prototype.substr = function (from, n) {
     this.log('substr');
     return this;
 };
-StringBuilder.prototype.get = function () {
-    this.log('get');
-    return this;
-};
 
 //ES6 class IntBuilder:
 IntBuilder.random(10, 100);
@@ -104,25 +100,7 @@ strBuld.plus(' all', '!')
 .minus(4)
 .multiply(3)
 .divide(4)
+.get()
 .remove('l')
 .substr(1, 1)
 .get();
-
-
-//GETTERS & SETTERS
-Object.defineProperty(intBuld, 'value', {
-	get: function() {
-		return this._value;
-	},
-	set: function(newValue) {
-		this._value = newValue;
-	}
-});
-Object.defineProperty(strBuld, 'value', {
-	get: function() {
-		return this._value;
-	},
-	set: function(newValue) {
-		this._value = newValue;
-	}
-});
