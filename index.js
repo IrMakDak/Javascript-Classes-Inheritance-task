@@ -14,12 +14,12 @@ class IntBuilder extends BaseBilder{
         super(value);
     }
     plus(...n) {
-        this._value += n.reduce((n, p) => +n + +p, 0);
+        this._value += n.reduce((accumulator, currentValue) => +accumulator + +currentValue, 0);
         this.log('plus');
         return this;
     }
     minus(...n) {
-        this._value += n.reduce((n, p) => +n - +p, 0);
+        this._value += n.reduce((accumulator, currentValue) => +accumulator - +currentValue, 0);
         this.log('minus');
         return this;
     }
@@ -39,7 +39,7 @@ class IntBuilder extends BaseBilder{
         return this;
     }
     static random(from, to) { 
-        let res = Math.floor(Math.random() * (+to - +from)) + +from;
+        const res = Math.floor(Math.random() * (+to - +from)) + +from;
         console.log(`random - ${res}`);
         return res;
     }
@@ -67,7 +67,7 @@ StringBuilder.prototype.multiply = function (n) {
     return this;
 };
 StringBuilder.prototype.divide = function (n) {
-    let k = Math.floor(this._value.length / n);
+    const k = Math.floor(this._value.length / n);
     this._value = this._value.slice(0, k);
     this.log('divide');
     return this;
